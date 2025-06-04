@@ -10,15 +10,45 @@ document.addEventListener("DOMContentLoaded", () => {
   let hasLost = false;
   let wordList = [];
 
-  const input = document.getElementById('mobileInput');
-  input.focus();
+  const hiddenInput = document.createElement('input');
+  hiddenInput.type = 'text';
+  hiddenInput.inputMode = 'text';
+  hiddenInput.autocapitalize = 'characters';
+  hiddenInput.style.position = 'absolute';
+  hiddenInput.style.opacity = '0';
+  hiddenInput.style.height = '0';
+  hiddenInput.style.width = '0';
+  hiddenInput.style.zIndex = '-1';
+  document.body.appendChild(hiddenInput);
+  hiddenInput.focus();
+
+  function isMobileDevice() {
+    return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+
+  if (isMobileDevice()) {
+    hiddenInput.style.opacity = '0.01';
+    hiddenInput.style.position = 'fixed';
+    hiddenInput.style.bottom = '0';
+    hiddenInput.style.left = '0';
+    hiddenInput.style.width = '1px';
+    hiddenInput.style.height = '1px';
+    hiddenInput.style.zIndex = '1000';
+
+    ["click", "touchstart"].forEach(evt => {
+      window.addEventListener(evt, () => {
+        hiddenInput.focus();
+        setTimeout(() => hiddenInput.focus(), 50);
+      });
+    });
+  }
 
   fetch('words.txt')
     .then(response => response.text())
     .then(data => {
       wordList = data.split('\n').map(word => word.trim().toUpperCase()).filter(word => word !== "");
       randomWord = wordList[Math.floor(Math.random() * wordList.length)];
-      console.log("Random word:", randomWord);
+      console.log(`Random Word: ${randomWord}`);
     });
 
   letterBoxes.forEach(box => box.textContent = "");
@@ -59,6 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let randomWordLetters = randomWord.split('');
     let guessLetters = guess.split('');
+
     for (let i = 0; i < rowLength; i++) {
       if (guessLetters[i] === randomWordLetters[i]) {
         flipReveal(start + i, "correct");
@@ -66,6 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
         guessLetters[i] = null;
       }
     }
+
     for (let i = 0; i < rowLength; i++) {
       if (guessLetters[i] && randomWordLetters.includes(guessLetters[i])) {
         flipReveal(start + i, "almost");
@@ -81,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   document.addEventListener("keydown", function(event) {
-    input.focus();
+    hiddenInput.focus();
     if (hasWon || hasLost) return;
 
     let letter = event.key.toUpperCase();
@@ -109,11 +141,13 @@ document.addEventListener("DOMContentLoaded", () => {
         if (prevRow < 0) return; 
         updateRowContent(prevRow);
         if (!checkRowWord(prevRow)) return;
+
         if (hasWon) return;
         if (currentRow >= totalRows) {
           hasLost = true;
           return;
         }
+
         currentIndex = currentRow * rowLength;
       }
     } else if (!invalidKeys.includes(letter) && letter.length === 1 && letter.match(/[A-Z]/)) {
@@ -128,13 +162,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   window.addEventListener("click", () => {
-    input.focus();
-  });
-
-  input.addEventListener("input", (e) => {
-    const key = e.target.value.toUpperCase();
-    e.target.value = "";
-    const event = new KeyboardEvent("keydown", { key });
-    document.dispatchEvent(event);
+    hiddenInput.focus();
   });
 });
