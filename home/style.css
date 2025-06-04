@@ -1,0 +1,204 @@
+body {
+  background-color: rgb(220, 220, 220);
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 90vh;
+}
+
+.title {
+  text-align: center;
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 50px;
+  font-weight: bold;
+  margin-bottom: 9px;
+  margin-top: 0px;
+}
+
+.logo {
+  max-width: 150px;
+}
+
+.top {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.subtitle {
+  text-align: center;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 30px;
+  margin-top: 0px;
+  opacity: 0.8;
+}
+
+.ris {
+  text-decoration: underline;
+  text-decoration-color: rgb(58, 58, 58);
+  color: rgb(90, 86, 86);
+  text-decoration-thickness: 2px;
+}
+
+.hop-letter {
+  display: inline-block;
+}
+
+.hop-letter.animate {
+  animation: hop 0.6s ease;
+}
+
+@keyframes hop {
+  0%   { transform: translateY(0); }
+  30%  { transform: translateY(-15px); }
+  60%  { transform: translateY(0); }
+  100% { transform: translateY(0); }
+}
+
+.playlink {
+  text-decoration: none;
+  color: rgb(58, 58, 58);
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 20px;
+  margin-top: 20px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+.playbutton {
+  margin-right: 20px;
+  background-color: transparent;
+  border: solid 2px rgb(58, 58, 58);
+  padding: 10px 50px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 24px;
+  cursor: pointer;
+}
+
+#turkish {
+  background-color: rgb(243, 87, 87);
+  color: white;
+}
+
+#turkish2 {
+  color: white;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(5, 60px); 
+  grid-auto-rows: 60px;                   
+  gap: 5px;                             
+  justify-content: center;
+  padding: 20px;
+  background-color: rgb(19, 19, 19);
+  margin-top: 5%;
+}
+
+.letter {
+  width: 60px;
+  height: 60px;
+  border: solid 2px rgb(75, 75, 75);
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  font-weight: bold;
+  color: white;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  box-sizing: border-box;
+}
+
+.correct {
+  width: 60px;
+  height: 60px;
+  border: none;
+  background-color: rgb(74, 172, 74);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  font-weight: bold;
+  color: white;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  box-sizing: border-box;
+}
+
+.almost {
+  width: 60px;
+  height: 60px;
+  border: none;
+  background-color: rgb(197, 140, 16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  font-weight: bold;
+  color: white;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  box-sizing: border-box;
+}
+
+
+
+@keyframes typingBounce {
+  0% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.letter.typing {
+  animation: typingBounce 0.4s ease;
+}
+
+.wrong {
+  width: 60px;
+  height: 60px;
+  border: none;
+  background-color: rgb(110, 110, 110);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  font-weight: bold;
+  color: white;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  box-sizing: border-box;
+}
+
+@keyframes flip {
+  0% { transform: rotateX(0); }
+  50% { transform: rotateX(90deg); }
+  100% { transform: rotateX(0); }
+}
+
+.letter {
+  transition: transform 0.3s;
+  transform-style: preserve-3d;
+}
+
+.correct, .almost, .wrong {
+  animation: flip 0.6s ease;
+}

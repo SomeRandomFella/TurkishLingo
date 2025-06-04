@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Home Page</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="main">
+      <div class="top">
+        <img src="../images/lingo.png" alt="lingo" class="logo" />
+        <h1 class="title" id="subtitle">Lingo</h1>
+        <h1 class="subtitle">
+          A game based off the hit<br />
+          gameshow
+          <a
+            class="ris"
+            href="https://en.wikipedia.org/wiki/Lingo_(American_game_show)"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Lingo</a
+          >
+        </h1>
+      </div>
+      <div class="buttons">
+        <button
+          class="playbutton"
+          id="english"
+          onclick="window.location.href = 'play.html'"
+        >
+          Play EN
+        </button>
+        <button
+          class="playbutton"
+          id="turkish"
+          onclick="window.location.href = 'playturrkish.html'"
+        >
+          Play TR
+        </button>
+      </div>
+    </div>
+    <script src="script.js"></script>
+    <script>
+      const subtitle = document.getElementById("subtitle");
+      const text = subtitle.textContent;
+      subtitle.textContent = "";
+
+      for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        if (char === " ") {
+          subtitle.appendChild(document.createTextNode(" "));
+          continue;
+        }
+        const span = document.createElement("span");
+        span.textContent = char;
+        span.classList.add("hop-letter");
+        span.style.animationDelay = `${i * 0.15}s`;
+
+        span.classList.add("animate");
+
+        subtitle.appendChild(span);
+      }
+
+      const animationDuration = 600;
+      const delayPerLetter = 150;
+      const totalDuration = animationDuration + delayPerLetter * text.length;
+
+      function restartAnimation() {
+        const spans = subtitle.querySelectorAll(".hop-letter");
+        spans.forEach((span) => {
+          span.classList.remove("animate");
+          void span.offsetWidth;
+          span.classList.add("animate");
+        });
+      }
+
+      setInterval(restartAnimation, totalDuration);
+    </script>
+  </body>
+</html>
