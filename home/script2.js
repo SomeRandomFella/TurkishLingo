@@ -22,12 +22,33 @@ document.addEventListener("DOMContentLoaded", () => {
   document.body.appendChild(hiddenInput);
   hiddenInput.focus();
 
+  function isMobileDevice() {
+    return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+
+  if (isMobileDevice()) {
+    hiddenInput.style.opacity = '0.01';
+    hiddenInput.style.position = 'fixed';
+    hiddenInput.style.bottom = '0';
+    hiddenInput.style.left = '0';
+    hiddenInput.style.width = '1px';
+    hiddenInput.style.height = '1px';
+    hiddenInput.style.zIndex = '1000';
+
+    ["click", "touchstart"].forEach(evt => {
+      window.addEventListener(evt, () => {
+        hiddenInput.focus();
+        setTimeout(() => hiddenInput.focus(), 50);
+      });
+    });
+  }
+
   fetch('turkishwords.txt')
     .then(response => response.text())
     .then(data => {
       wordList = data.split('\n').map(word => word.trim().toUpperCase()).filter(word => word !== "");
       randomWord = wordList[Math.floor(Math.random() * wordList.length)];
-      console.log(`Random Words ${randomWord}`);
+      console.log(`Random Word: ${randomWord}`);
     });
 
   letterBoxes.forEach(box => box.textContent = "");
@@ -68,12 +89,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let randomWordLetters = randomWord.split('');
     let guessLetters = guess.split('');
-    let usedIndices = [];
 
     for (let i = 0; i < rowLength; i++) {
       if (guessLetters[i] === randomWordLetters[i]) {
         flipReveal(start + i, "correct");
-        usedIndices.push(i);
         randomWordLetters[i] = null;
         guessLetters[i] = null;
       }
