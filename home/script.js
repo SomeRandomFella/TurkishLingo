@@ -10,17 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let hasLost = false;
   let wordList = [];
 
-  const hiddenInput = document.createElement('input');
-  hiddenInput.type = 'text';
-  hiddenInput.inputMode = 'text';
-  hiddenInput.autocapitalize = 'characters';
-  hiddenInput.style.position = 'absolute';
-  hiddenInput.style.opacity = '0';
-  hiddenInput.style.height = '0';
-  hiddenInput.style.width = '0';
-  hiddenInput.style.zIndex = '-1';
-  document.body.appendChild(hiddenInput);
-  hiddenInput.focus();
+  const input = document.getElementById('mobileInput');
+  input.focus();
 
   fetch('words.txt')
     .then(response => response.text())
@@ -68,17 +59,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let randomWordLetters = randomWord.split('');
     let guessLetters = guess.split('');
-    let usedIndices = [];
-
     for (let i = 0; i < rowLength; i++) {
       if (guessLetters[i] === randomWordLetters[i]) {
         flipReveal(start + i, "correct");
-        usedIndices.push(i);
         randomWordLetters[i] = null;
         guessLetters[i] = null;
       }
     }
-
     for (let i = 0; i < rowLength; i++) {
       if (guessLetters[i] && randomWordLetters.includes(guessLetters[i])) {
         flipReveal(start + i, "almost");
@@ -94,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   document.addEventListener("keydown", function(event) {
-    hiddenInput.focus();
+    input.focus();
     if (hasWon || hasLost) return;
 
     let letter = event.key.toUpperCase();
@@ -122,13 +109,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (prevRow < 0) return; 
         updateRowContent(prevRow);
         if (!checkRowWord(prevRow)) return;
-
         if (hasWon) return;
         if (currentRow >= totalRows) {
           hasLost = true;
           return;
         }
-
         currentIndex = currentRow * rowLength;
       }
     } else if (!invalidKeys.includes(letter) && letter.length === 1 && letter.match(/[A-Z]/)) {
@@ -143,6 +128,13 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   window.addEventListener("click", () => {
-    hiddenInput.focus();
+    input.focus();
+  });
+
+  input.addEventListener("input", (e) => {
+    const key = e.target.value.toUpperCase();
+    e.target.value = "";
+    const event = new KeyboardEvent("keydown", { key });
+    document.dispatchEvent(event);
   });
 });
